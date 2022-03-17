@@ -39,7 +39,7 @@ namespace WeChatImageDecode
             GIF,
             BMP,
             PNG,
-            JPEG,
+            JPG,
             UNKNOW
         }
 
@@ -53,7 +53,7 @@ namespace WeChatImageDecode
                 //判断图片格式，将图片的前两个字节和对应的文件头进行异或操作
                 if ((data[0] ^ (byte)ImageHeaderValue.JpegHeaderValue1) == (data[1] ^ (byte)ImageHeaderValue.JpegHeaderValue2))
                 {
-                    imageFormat = ImageFormat.JPEG;
+                    imageFormat = ImageFormat.JPG;
                     decodeValue = data[0] ^ (byte)ImageHeaderValue.JpegHeaderValue1;
                 }
                 else if ((data[0] ^ (byte)ImageHeaderValue.PngHeaderValue1) == (data[1] ^ (byte)ImageHeaderValue.PngHeaderValue2))
@@ -98,6 +98,7 @@ namespace WeChatImageDecode
                     readLength += n;
                     totalLen -= n;
                 }
+                //对每个字节进行异或操作
                 for(int i = 0; i < imgData.Length; i++)
                 {
                     imgData[i] = (byte)(imgData[i] ^ encodeValue);
