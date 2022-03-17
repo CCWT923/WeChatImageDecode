@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeChatImageDecode", "WeChatImageDecode.csproj", "{A5F03205-0B9D-4D4C-8360-7C686EBF1045}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5F03205-0B9D-4D4C-8360-7C686EBF1045}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5F03205-0B9D-4D4C-8360-7C686EBF1045}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5F03205-0B9D-4D4C-8360-7C686EBF1045}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5F03205-0B9D-4D4C-8360-7C686EBF1045}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {068B9229-2D94-4785-9DE5-84EA4AF93F3F}
+	EndGlobalSection
+EndGlobal
