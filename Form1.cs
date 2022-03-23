@@ -16,6 +16,10 @@ namespace WeChatImageDecode
             {
                 return;
             }
+            if(string.IsNullOrEmpty(TextBox_TargetFolder.Text.Trim()))
+            {
+                return;
+            }
 
             if(!Directory.Exists(TextBox_TargetFolder.Text))
             {
@@ -39,7 +43,7 @@ namespace WeChatImageDecode
                 {
                     png++;
                 }
-                else if(imgFormat != ImageInformation.ImageFormat.BMP)
+                else if(imgFormat == ImageInformation.ImageFormat.BMP)
                 {
                     bmp++;
                 }
@@ -57,14 +61,16 @@ namespace WeChatImageDecode
                     continue;
                 }
 
-                using(FileStream fs = new FileStream(TextBox_TargetFolder.Text + "\\" + Path.GetFileNameWithoutExtension(file) + "." + Enum.GetName(typeof(ImageInformation.ImageFormat), imgFormat).ToLower(), FileMode.Create, FileAccess.Write))
+                var fileName = TextBox_TargetFolder.Text + "\\" + Path.GetFileNameWithoutExtension(file) + "." + Enum.GetName(typeof(ImageInformation.ImageFormat), imgFormat).ToLower();
+
+                using(FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
                 {
                     fs.Write(imgInfo.DecodeImage(file, decodeValue));
                 }
 
             }
 
-            MessageBox.Show($"共处理 JPG 格式 {jpg} 个, PNG 格式 {png} 个，GIF 格式 {gif} 个， BMP 格式 {bmp} 个，未知格式 {unknow} 个 。");
+            MessageBox.Show($"{(jpg > 0 ? $"处理 JPG 格式 {jpg} 个，" : "")}{(png > 0 ? $"PNG 格式 {png} 个，" : "" )}{(gif > 0 ? $"GIF 格式 {gif} 个，" : "")}{(bmp > 0 ? $"BMP 格式 {bmp} 个，" : "")}{(unknow > 0 ? $"未知格式 {unknow} 个" : "")}");
         }
 
 

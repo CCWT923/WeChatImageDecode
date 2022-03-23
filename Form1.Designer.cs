@@ -39,7 +39,7 @@
             // 
             // Btn_Start
             // 
-            this.Btn_Start.Location = new System.Drawing.Point(12, 152);
+            this.Btn_Start.Location = new System.Drawing.Point(503, 145);
             this.Btn_Start.Name = "Btn_Start";
             this.Btn_Start.Size = new System.Drawing.Size(157, 45);
             this.Btn_Start.TabIndex = 0;
@@ -105,7 +105,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 236);
+            this.ClientSize = new System.Drawing.Size(684, 221);
             this.Controls.Add(this.Btn_SelectTargetFolder);
             this.Controls.Add(this.Btn_SelectSourceFolder);
             this.Controls.Add(this.label2);

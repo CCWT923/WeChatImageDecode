@@ -43,6 +43,12 @@ namespace WeChatImageDecode
             UNKNOW
         }
 
+        /// <summary>
+        /// 获取图片原来的格式
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="decodeValue">将 dat 文件的第一个字节和对应格式头部的第一个字节进行异或操作的值，这个值就可以用来解码</param>
+        /// <param name="imageFormat">图片格式</param>
         public void GetImageFormat(string fileName, out int decodeValue, out ImageFormat imageFormat)
         {
             using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
@@ -79,6 +85,12 @@ namespace WeChatImageDecode
 
             }
         }
+        /// <summary>
+        /// 解码图片
+        /// </summary>
+        /// <param name="fileName">原始文件名</param>
+        /// <param name="encodeValue">dat 格式文件的第一个字节对相应格式异或后的值，用这个值对每个字节进行异或操作</param>
+        /// <returns></returns>
 
         public byte[] DecodeImage(string fileName, int encodeValue)
         {
