@@ -12,67 +12,92 @@ namespace WeChatImageDecode
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(TextBox_SourceFolder.Text.Trim() == "" || !Directory.Exists(TextBox_SourceFolder.Text.Trim()))
+            ImageTypeCounter counter;
+            if(FilesDropIn.Count > 0)
             {
-                return;
+                counter = DecodeFiles(FilesDropIn.ToArray<string>());
             }
-            if(string.IsNullOrEmpty(TextBox_TargetFolder.Text.Trim()))
+            else
             {
-                return;
-            }
+                if (TextBox_SourceFolder.Text.Trim() == "" || !Directory.Exists(TextBox_SourceFolder.Text.Trim()))
+                {
+                    return;
+                }
+                if (string.IsNullOrEmpty(TextBox_TargetFolder.Text.Trim()))
+                {
+                    return;
+                }
 
-            if(!Directory.Exists(TextBox_TargetFolder.Text))
-            {
-                Directory.CreateDirectory(TextBox_TargetFolder.Text);
+                if (!Directory.Exists(TextBox_TargetFolder.Text))
+                {
+                    Directory.CreateDirectory(TextBox_TargetFolder.Text);
+                }
+                counter = DecodeFiles(Directory.GetFiles(TextBox_TargetFolder.Text),TextBox_TargetFolder.Text);
             }
+            
 
+            MessageBox.Show($"{(counter.JPG > 0 ? $"处理 JPG 格式 {counter.JPG} 个，" : "")}{(counter.PNG > 0 ? $"PNG 格式 {counter.PNG} 个，" : "" )}{(counter.GIF > 0 ? $"GIF 格式 {counter.GIF} 个，" : "")}{(counter.BMP > 0 ? $"BMP 格式 {counter.BMP} 个，" : "")}{(counter.UNKNOW > 0 ? $"未知格式 {counter.UNKNOW} 个" : "")}");
+            FilesDropIn.Clear();
+            
+        }
+
+
+        private ImageTypeCounter DecodeFiles(string[] files, string targetFolder = "")
+        {
+            ImageTypeCounter counter = new ImageTypeCounter();
             ImageInformation imgInfo = new ImageInformation();
-            int unknow = 0;
-            int gif = 0;
-            int jpg = 0;
-            int png = 0;
-            int bmp = 0;
-            foreach (var file in Directory.GetFiles(TextBox_SourceFolder.Text))
+
+            foreach (var file in files)
             {
                 if (Path.GetExtension(file).ToLower() != ".dat")
                     continue;
 
                 imgInfo.GetImageFormat(file, out int decodeValue, out ImageInformation.ImageFormat imgFormat);
 
-                if(imgFormat == ImageInformation.ImageFormat.PNG)
+                if (imgFormat == ImageInformation.ImageFormat.PNG)
                 {
-                    png++;
+                    counter.PNG++;
                 }
-                else if(imgFormat == ImageInformation.ImageFormat.BMP)
+                else if (imgFormat == ImageInformation.ImageFormat.BMP)
                 {
-                    bmp++;
+                    counter.BMP++;
                 }
-                else if(imgFormat == ImageInformation.ImageFormat.GIF)
+                else if (imgFormat == ImageInformation.ImageFormat.GIF)
                 {
-                    gif++;
+                    counter.GIF++;
                 }
-                else if(imgFormat == ImageInformation.ImageFormat.JPG)
+                else if (imgFormat == ImageInformation.ImageFormat.JPG)
                 {
-                    jpg++;
+                    counter.JPG++;
                 }
                 else
                 {
-                    unknow++;
+                    counter.UNKNOW++;
                     continue;
                 }
 
-                var fileName = TextBox_TargetFolder.Text + "\\" + Path.GetFileNameWithoutExtension(file) + "." + Enum.GetName(typeof(ImageInformation.ImageFormat), imgFormat).ToLower();
+                if(string.IsNullOrEmpty(targetFolder))
+                {
+                    targetFolder = Path.GetDirectoryName(file);
+                }
+                var fileName = Path.Combine(targetFolder, Path.GetFileNameWithoutExtension(file) + "." + Enum.GetName(typeof(ImageInformation.ImageFormat), imgFormat).ToLower());
 
-                using(FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+                using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
                 {
                     fs.Write(imgInfo.DecodeImage(file, decodeValue));
                 }
-
             }
-
-            MessageBox.Show($"{(jpg > 0 ? $"处理 JPG 格式 {jpg} 个，" : "")}{(png > 0 ? $"PNG 格式 {png} 个，" : "" )}{(gif > 0 ? $"GIF 格式 {gif} 个，" : "")}{(bmp > 0 ? $"BMP 格式 {bmp} 个，" : "")}{(unknow > 0 ? $"未知格式 {unknow} 个" : "")}");
+            return counter;
         }
 
+        struct ImageTypeCounter
+        {
+            public int JPG { get; set; }
+            public int PNG { get; set; }
+            public int BMP { get; set; }
+            public int GIF { get; set; }
+            public int UNKNOW { get; set; }
+        }
 
         private void FolderBrowser(object sender, EventArgs e)
         {
@@ -87,6 +112,34 @@ namespace WeChatImageDecode
                 {
                     TextBox_TargetFolder.Text = dialog.SelectedPath;
                 }
+            }
+        }
+
+        private void TextBox_SourceFolder_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data == null) return;
+            if(e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+
+        static List<string> FilesDropIn = new List<string>();
+
+        private void TextBox_SourceFolder_DragDrop(object sender, DragEventArgs e)
+        {
+            if(e.Data == null) return;
+            if(e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+                foreach (var file in files)
+                {
+                    if(file.EndsWith(".dat"))
+                    {
+                        FilesDropIn.Add(file);
+                    }
+                }
+                TextBox_SourceFolder.Text = $"共 {FilesDropIn.Count} 个文件";
             }
         }
     }

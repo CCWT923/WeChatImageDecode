@@ -49,10 +49,13 @@
             // 
             // TextBox_SourceFolder
             // 
+            this.TextBox_SourceFolder.AllowDrop = true;
             this.TextBox_SourceFolder.Location = new System.Drawing.Point(12, 43);
             this.TextBox_SourceFolder.Name = "TextBox_SourceFolder";
             this.TextBox_SourceFolder.Size = new System.Drawing.Size(556, 23);
             this.TextBox_SourceFolder.TabIndex = 1;
+            this.TextBox_SourceFolder.DragDrop += new System.Windows.Forms.DragEventHandler(this.TextBox_SourceFolder_DragDrop);
+            this.TextBox_SourceFolder.DragEnter += new System.Windows.Forms.DragEventHandler(this.TextBox_SourceFolder_DragEnter);
             // 
             // label1
             // 
