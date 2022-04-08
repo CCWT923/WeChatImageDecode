@@ -32,7 +32,7 @@ namespace WeChatImageDecode
                 {
                     Directory.CreateDirectory(TextBox_TargetFolder.Text);
                 }
-                counter = DecodeFiles(Directory.GetFiles(TextBox_TargetFolder.Text),TextBox_TargetFolder.Text);
+                counter = DecodeFiles(Directory.GetFiles(TextBox_SourceFolder.Text),TextBox_TargetFolder.Text);
             }
             
 
