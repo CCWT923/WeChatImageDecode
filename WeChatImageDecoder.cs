@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace WeChatImageDecode
 {
-    internal class ImageInformation
+    /// <summary>
+    /// 
+    /// </summary>
+    internal class WeChatImageDecoder
     {
         /*
          * 文件头：
@@ -90,7 +93,7 @@ namespace WeChatImageDecode
         /// </summary>
         /// <param name="fileName">原始文件名</param>
         /// <param name="encodeValue">dat 格式文件的第一个字节对相应格式异或后的值，用这个值对每个字节进行异或操作</param>
-        /// <returns></returns>
+        /// <returns>解码后的文件字节数组</returns>
 
         public byte[] DecodeImage(string fileName, int encodeValue)
         {

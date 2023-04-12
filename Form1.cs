@@ -45,28 +45,28 @@ namespace WeChatImageDecode
         private ImageTypeCounter DecodeFiles(string[] files, string targetFolder = "")
         {
             ImageTypeCounter counter = new ImageTypeCounter();
-            ImageInformation imgInfo = new ImageInformation();
+            WeChatImageDecoder imgInfo = new WeChatImageDecoder();
 
             foreach (var file in files)
             {
                 if (Path.GetExtension(file).ToLower() != ".dat")
                     continue;
 
-                imgInfo.GetImageFormat(file, out int decodeValue, out ImageInformation.ImageFormat imgFormat);
+                imgInfo.GetImageFormat(file, out int decodeValue, out WeChatImageDecoder.ImageFormat imgFormat);
 
-                if (imgFormat == ImageInformation.ImageFormat.PNG)
+                if (imgFormat == WeChatImageDecoder.ImageFormat.PNG)
                 {
                     counter.PNG++;
                 }
-                else if (imgFormat == ImageInformation.ImageFormat.BMP)
+                else if (imgFormat == WeChatImageDecoder.ImageFormat.BMP)
                 {
                     counter.BMP++;
                 }
-                else if (imgFormat == ImageInformation.ImageFormat.GIF)
+                else if (imgFormat == WeChatImageDecoder.ImageFormat.GIF)
                 {
                     counter.GIF++;
                 }
-                else if (imgFormat == ImageInformation.ImageFormat.JPG)
+                else if (imgFormat == WeChatImageDecoder.ImageFormat.JPG)
                 {
                     counter.JPG++;
                 }
@@ -80,7 +80,7 @@ namespace WeChatImageDecode
                 {
                     targetFolder = Path.GetDirectoryName(file);
                 }
-                var fileName = Path.Combine(targetFolder, Path.GetFileNameWithoutExtension(file) + "." + Enum.GetName(typeof(ImageInformation.ImageFormat), imgFormat).ToLower());
+                var fileName = Path.Combine(targetFolder, Path.GetFileNameWithoutExtension(file) + "." + Enum.GetName(typeof(WeChatImageDecoder.ImageFormat), imgFormat).ToLower());
 
                 using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
                 {
